@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { devConsoleError, devConsoleLog } from './logging';
 
 if (window.location.hostname === 'localhost') {
   axios.defaults.baseURL = 'http://localhost:4200/api';
@@ -9,13 +10,15 @@ if (window.location.hostname === 'localhost') {
 axios.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-    console.log(`REQUEST : ${config.url}\n\nJSON : ${JSON.stringify(config)}`);
+    devConsoleLog(
+      `REQUEST : ${config.url}\n\nJSON : ${JSON.stringify(config)}`
+    );
 
     return config;
   },
   function (error) {
     // Do something with request error
-    console.log(`API request error : ${JSON.stringify(error)}`);
+    devConsoleLog(`API request error : ${JSON.stringify(error)}`);
 
     return Promise.reject(error);
   }
@@ -24,7 +27,7 @@ axios.interceptors.request.use(
 // Add a response interceptor
 axios.interceptors.response.use(
   function (response) {
-    console.log(
+    devConsoleLog(
       `[${response.status}] RESPONSE : ${
         response.config.url
       } \n\nJSON : ${JSON.stringify(response)}`
@@ -35,9 +38,9 @@ axios.interceptors.response.use(
   function (error) {
     // Do something with response error
     if (error.response) {
-      console.error(`API response error : ${JSON.stringify(error.response)}`);
+      devConsoleError(`API response error : ${JSON.stringify(error.response)}`);
     } else {
-      console.error(`API response error : ${JSON.stringify(error)}`);
+      devConsoleError(`API response error : ${JSON.stringify(error)}`);
     }
 
     return Promise.reject({
