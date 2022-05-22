@@ -14,16 +14,17 @@ import {
   InputRightElement,
   FormErrorMessage,
 } from '@chakra-ui/react';
-import { FaUserAlt, FaLock } from 'react-icons/fa';
+import { FaLock, FaEnvelope } from 'react-icons/fa';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Link } from 'react-router-dom';
-import { AppDispatch } from 'redux/store';
-import { useDispatch } from 'react-redux';
+import { Link, Navigate } from 'react-router-dom';
+import { AppDispatch, RootState } from 'redux/store';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginUserThunk } from 'redux/actions/authAction';
+import { LoggedInStateEnum } from 'redux/reducers/authReducer';
 
-const CFaUserAlt = chakra(FaUserAlt);
+const CFaEnvelope = chakra(FaEnvelope);
 const CFaLock = chakra(FaLock);
 
 const loginSchema = yup.object().shape({
@@ -40,6 +41,10 @@ export const LoginContainer = () => {
 
   const dispatch: AppDispatch = useDispatch();
 
+  const loggedInState: LoggedInStateEnum = useSelector(
+    (state: RootState) => state.auth.loggedInState
+  );
+
   const handleShowClick = () => setShowPassword(!showPassword);
 
   const {
@@ -53,6 +58,9 @@ export const LoginContainer = () => {
   const onSubmit = async (loginInfo: any) => {
     dispatch(loginUserThunk(loginInfo));
   };
+
+  if (loggedInState === LoggedInStateEnum.LoggedIn)
+    return <Navigate to={'/home'} />;
 
   return (
     <Flex
@@ -83,7 +91,7 @@ export const LoginContainer = () => {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents='none'
-                    children={<CFaUserAlt color='gray.300' />}
+                    children={<CFaEnvelope color='gray.300' />}
                   />
                   <Input
                     type='email'
@@ -102,7 +110,7 @@ export const LoginContainer = () => {
                   />
                   <Input
                     type={showPassword ? 'text' : 'password'}
-                    placeholder='Password'
+                    placeholder='password'
                     {...register('password')}
                   />
                   <InputRightElement width='4.5rem'>
@@ -119,6 +127,7 @@ export const LoginContainer = () => {
                 variant='solid'
                 colorScheme='teal'
                 width='full'
+                isLoading={loggedInState === LoggedInStateEnum.Pending}
               >
                 Login
               </Button>
