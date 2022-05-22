@@ -14,7 +14,8 @@ export const registerUserThunk: AsyncThunk<
 > = createAsyncThunk<RegisterUserResponse, RegisterUserRequest>(
   'auth/register',
   async (request, thunkApi) => {
-    return await registerUser(request);
+    const response = await registerUser(request);
+    return response.data;
   }
 );
 

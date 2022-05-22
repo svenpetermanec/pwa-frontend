@@ -4,7 +4,9 @@ export interface RegisterUserRequest {
   password: string;
 }
 
-export interface RegisterUserResponse {}
+export interface RegisterUserResponse {
+  token: string;
+}
 
 export interface LoginUserRequest {
   email: string;

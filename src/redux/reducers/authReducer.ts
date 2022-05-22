@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { loginUserThunk } from 'redux/actions/authAction';
+import { loginUserThunk, registerUserThunk } from 'redux/actions/authAction';
 import { setLocalStorageJwt } from 'utils/localStorage';
 
-enum LoggedInStateEnum {
+export enum LoggedInStateEnum {
   Uninitialized = 0,
   Pending = 1,
   LoggedIn = 2,
@@ -32,6 +32,17 @@ const authReducer = createSlice({
       state.loggedInState = LoggedInStateEnum.Pending;
     });
     builder.addCase(loginUserThunk.fulfilled, (state, action) => {
+      setLocalStorageJwt(action.payload.token);
+      state.loggedInState = LoggedInStateEnum.LoggedIn;
+    });
+    builder.addCase(registerUserThunk.rejected, (state) => {
+      toast.error('error');
+      state.loggedInState = LoggedInStateEnum.Unauthorized;
+    });
+    builder.addCase(registerUserThunk.pending, (state) => {
+      state.loggedInState = LoggedInStateEnum.Pending;
+    });
+    builder.addCase(registerUserThunk.fulfilled, (state, action) => {
       setLocalStorageJwt(action.payload.token);
       state.loggedInState = LoggedInStateEnum.LoggedIn;
     });

@@ -1,11 +1,18 @@
 import { LoginContainer } from 'containers/LoginContainer';
+import { RegisterContainer } from 'containers/RegisterContainer';
+import { useSelector } from 'react-redux';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { LoggedInStateEnum } from 'redux/reducers/authReducer';
+import { RootState } from 'redux/store';
 
 export const App = () => {
-  //check redux store
-  const isLoggedIn = () => true;
+  const isLoggedIn = () => loggedInState === LoggedInStateEnum.LoggedIn;
+
+  const loggedInState: LoggedInStateEnum = useSelector(
+    (state: RootState) => state.auth.loggedInState
+  );
 
   return (
     <>
@@ -20,7 +27,7 @@ export const App = () => {
       />
       <Routes>
         <Route path={'/login'} element={<LoginContainer />} />
-        <Route path={'/register'} element={<div>register</div>} />
+        <Route path={'/register'} element={<RegisterContainer />} />
         <Route
           path={'/home'}
           element={isLoggedIn() ? <div>home</div> : <Navigate to={'/login'} />}
