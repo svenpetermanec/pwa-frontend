@@ -7,7 +7,7 @@ export const executeHttpGetAuthorized = async (url: string, params?: any) => {
     params,
   };
 
-  config.headers = { Authorization: `x-auth-token: ${getLocalStorageJwt()}` };
+  config.headers = { Authorization: `${getLocalStorageJwt()}` };
   const response = await api.get(url, config);
 
   return response;
@@ -15,7 +15,7 @@ export const executeHttpGetAuthorized = async (url: string, params?: any) => {
 
 export const executeHttpPostAuthorized = async (url: string, params?: any) => {
   const config: AxiosRequestConfig = {
-    headers: { Authorization: `x-auth-token: ${getLocalStorageJwt()}` },
+    headers: { Authorization: `${getLocalStorageJwt()}` },
   };
 
   const response = await api.post(url, params, config);

@@ -1,3 +1,4 @@
+import { HomeContainer } from 'containers/HomeContainer';
 import { LoginContainer } from 'containers/LoginContainer';
 import { RegisterContainer } from 'containers/RegisterContainer';
 import { useSelector } from 'react-redux';
@@ -28,6 +29,7 @@ export const App = () => {
       <Routes>
         <Route path={'/login'} element={<LoginContainer />} />
         <Route path={'/register'} element={<RegisterContainer />} />
+        <Route path={'/home'} element={<HomeContainer />} />
         <Route
           path={'/home'}
           element={isLoggedIn() ? <div>home</div> : <Navigate to={'/login'} />}
