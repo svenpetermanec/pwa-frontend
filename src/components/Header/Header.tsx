@@ -2,9 +2,6 @@ import {
   Box,
   chakra,
   Flex,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Spacer,
   Menu,
   MenuButton,
@@ -13,13 +10,27 @@ import {
   Button,
   Text,
 } from '@chakra-ui/react';
-import { FaSearch, FaAngleDown } from 'react-icons/fa';
+import { FaAngleDown } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logout } from 'redux/reducers/authReducer';
+import { AppDispatch } from 'redux/store';
+import { deleteLocalStorageJwt } from 'utils/localStorage';
 import { HeaderFlex } from './HeaderFlex';
+import { SearchBar } from './SearchBar';
 
-const CFaSearch = chakra(FaSearch);
 const CFaAngleDown = chakra(FaAngleDown);
 
 export const Header = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const onLogout = () => {
+    dispatch(logout());
+    deleteLocalStorageJwt();
+    navigate('/login');
+  };
+
   return (
     <Flex bg='teal.500'>
       <Box w='10%' display={{ sm: 'none', lg: 'inherit' }}>
@@ -28,20 +39,7 @@ export const Header = () => {
       <Spacer display={{ sm: 'none', lg: 'block' }} />
       <Box w={{ sm: '90%', lg: '40%' }} h='50px'>
         <HeaderFlex>
-          <InputGroup ml='1'>
-            <InputLeftElement
-              pointerEvents='none'
-              children={<CFaSearch color='white' />}
-            />
-            <Input
-              type='text'
-              placeholder='search'
-              _placeholder={{ color: 'white' }}
-              color='white'
-              focusBorderColor='white'
-              //add search
-            />
-          </InputGroup>
+          <SearchBar />
         </HeaderFlex>
       </Box>
       <Spacer display={{ sm: 'none', lg: 'block' }} />
@@ -57,7 +55,7 @@ export const Header = () => {
             </MenuButton>
             <MenuList>
               <MenuItem>Change avatar</MenuItem>
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={onLogout}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </HeaderFlex>
