@@ -22,7 +22,11 @@ const initialState: AuthState = {
 const authReducer = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    logout(state) {
+      state.loggedInState = LoggedInStateEnum.Unauthorized;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(loginUserThunk.rejected, (state) => {
       toast.error('Incorrect login information');
@@ -36,7 +40,7 @@ const authReducer = createSlice({
       state.loggedInState = LoggedInStateEnum.LoggedIn;
     });
     builder.addCase(registerUserThunk.rejected, (state) => {
-      toast.error('error');
+      toast.error("Can't create account right now");
       state.loggedInState = LoggedInStateEnum.Unauthorized;
     });
     builder.addCase(registerUserThunk.pending, (state) => {
@@ -48,6 +52,8 @@ const authReducer = createSlice({
     });
   },
 });
+
+export const { logout } = authReducer.actions;
 
 const { reducer } = authReducer;
 
