@@ -26,8 +26,8 @@ export const FriendsContainer = () => {
     >
       {friends.length === 0 && <Center>Add friends to start messaging</Center>}
 
-      {friends.map((friend: Friend) => (
-        <HStack p={3}>
+      {friends.map((friend: Friend, index: number) => (
+        <HStack key={index} p={3}>
           <Center
             fontWeight='semibold'
             //onclick open chat
