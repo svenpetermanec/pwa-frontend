@@ -1,8 +1,12 @@
 export interface Post {
-    id: number;
-    content: string;
-    timestamp: Date;
-    images: string[];
-    userId: number;
-    username: string;
+  id: number;
+  content: string;
+  timestamp: Date;
+  images: string[];
+  userId: number;
+  username: string;
+}
+
+export interface GetPostsResponse {
+  posts: Post[];
 }

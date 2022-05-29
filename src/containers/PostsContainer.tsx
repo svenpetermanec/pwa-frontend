@@ -1,21 +1,23 @@
 import { Box } from '@chakra-ui/react';
 import { PostAddition } from 'components/Post/PostAddition';
 import { SinglePost } from 'components/Post/SinglePost';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPostsThunk } from 'redux/actions/postsAction';
 import { Post } from 'redux/models/postModel';
-import { executeHttpGetAuthorized } from 'redux/services/requests';
+import { AppDispatch, RootState } from 'redux/store';
 
 export const PostsContainer = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const dispatch: AppDispatch = useDispatch();
+
+  const posts: Post[] = useSelector((state: RootState) => state.post.posts);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      //not to stay
-      const response = await executeHttpGetAuthorized('/post');
-      setPosts(response.data);
+      dispatch(getPostsThunk());
     };
     fetchPosts();
-  }, []);
+  }, [dispatch]);
 
   return (
     <Box
