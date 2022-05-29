@@ -14,16 +14,14 @@ export interface SearchUsersRequest {
   username: string;
 }
 
-export interface SearchUserResponse {
-  id: number;
-  username: string;
-}
+export interface SearchUserResponse extends Friend {}
 
 export interface AddFriendRequest {
   userId: number;
 }
 
-export interface AddFriendResponse {
-  id: number;
-  username: string;
+export interface AddFriendResponse extends Friend {}
+
+export interface GetFriendsResponse {
+  friends: Friend[];
 }

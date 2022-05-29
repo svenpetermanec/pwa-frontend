@@ -2,10 +2,15 @@ import { AsyncThunk, createAsyncThunk } from '@reduxjs/toolkit';
 import {
   AddFriendRequest,
   AddFriendResponse,
+  GetFriendsResponse,
   SearchUserResponse,
   SearchUsersRequest,
 } from 'redux/models/friendModel';
-import { addFriend, searchUsers } from 'redux/services/friends.service';
+import {
+  addFriend,
+  getFriends,
+  searchUsers,
+} from 'redux/services/friends.service';
 
 export const searchUsersThunk: AsyncThunk<
   SearchUserResponse,
@@ -30,3 +35,9 @@ export const addFriendThunk: AsyncThunk<
     return response.data;
   }
 );
+
+export const getFriendsThunk: AsyncThunk<GetFriendsResponse, void, {}> =
+  createAsyncThunk<GetFriendsResponse, void>('friend/all', async () => {
+    const response = await getFriends();
+    return response.data;
+  });

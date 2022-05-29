@@ -1,22 +1,21 @@
 import { Avatar, Box, Center, HStack } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { executeHttpGetAuthorized } from 'redux/services/requests';
-
-interface Friend {
-  id: number;
-  username: string;
-}
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFriendsThunk } from 'redux/actions/friendsAction';
+import { Friend } from 'redux/models/friendModel';
+import { AppDispatch, RootState } from 'redux/store';
 
 export const FriendsContainer = () => {
-  const [friends, setFriends] = useState<Friend[]>([]);
+  const dispatch: AppDispatch = useDispatch();
+
+  const friends = useSelector((state: RootState) => state.friend.friends);
 
   useEffect(() => {
     const getFriends = async () => {
-      const response = await executeHttpGetAuthorized('/friend');
-      setFriends(response.data);
+      dispatch(getFriendsThunk());
     };
     getFriends();
-  }, []);
+  }, [dispatch]);
 
   return (
     <Box

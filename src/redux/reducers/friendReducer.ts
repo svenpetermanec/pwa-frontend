@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { addFriendThunk, searchUsersThunk } from 'redux/actions/friendsAction';
+import {
+  addFriendThunk,
+  getFriendsThunk,
+  searchUsersThunk,
+} from 'redux/actions/friendsAction';
 import { Friend, FriendActionPayload } from 'redux/models/friendModel';
 import { toast } from 'react-toastify';
 
@@ -23,15 +27,8 @@ const friendSlice = createSlice({
     ): void {},
   },
   extraReducers: (builder) => {
-    builder.addCase(searchUsersThunk.fulfilled, (state) => {
-      state.loading = false;
-    });
-    builder.addCase(searchUsersThunk.pending, (state) => {
-      state.loading = true;
-    });
     builder.addCase(searchUsersThunk.rejected, (state) => {
       toast.error('No user found');
-      state.loading = false;
     });
     builder.addCase(addFriendThunk.fulfilled, (state, action) => {
       toast.success('Friend added');
@@ -44,6 +41,10 @@ const friendSlice = createSlice({
     builder.addCase(addFriendThunk.rejected, (state) => {
       toast.warning('User already befriended');
       state.loading = false;
+    });
+    builder.addCase(getFriendsThunk.fulfilled, (state, action) => {
+      console.log(action.payload);
+      state.friends = action.payload.friends;
     });
   },
 });
