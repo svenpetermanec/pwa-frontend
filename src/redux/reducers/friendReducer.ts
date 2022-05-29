@@ -1,10 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import {
   addFriendThunk,
   getFriendsThunk,
   searchUsersThunk,
 } from 'redux/actions/friendsAction';
-import { Friend, FriendActionPayload } from 'redux/models/friendModel';
+import { Friend } from 'redux/models/friendModel';
 import { toast } from 'react-toastify';
 
 export interface FriendState {
@@ -20,12 +20,7 @@ const initialState: FriendState = {
 const friendSlice = createSlice({
   name: 'friends',
   initialState,
-  reducers: {
-    addFriend<T>(
-      state: FriendState = initialState,
-      action: PayloadAction<FriendActionPayload<T>>
-    ): void {},
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(searchUsersThunk.rejected, (state) => {
       toast.error('No user found');
@@ -43,7 +38,6 @@ const friendSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(getFriendsThunk.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.friends = action.payload.friends;
     });
   },
