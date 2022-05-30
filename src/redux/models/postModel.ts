@@ -10,3 +10,10 @@ export interface Post {
 export interface GetPostsResponse {
   posts: Post[];
 }
+
+export interface AddPostResponse extends Post {}
+
+export interface AddPostRequest {
+  content: Text;
+  image: BinaryData[];
+}

@@ -7,7 +7,7 @@ import {
 import {
   executeHttpGetAuthorized,
   executeHttpPostAuthorized,
-} from './requests';
+} from '../requests';
 
 export const searchUsers = async (params: SearchUsersRequest) => {
   return executeHttpGetAuthorized(searchRoute, params);

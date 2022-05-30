@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Center, Spinner } from '@chakra-ui/react';
 import { PostAddition } from 'components/Post/PostAddition';
 import { SinglePost } from 'components/Post/SinglePost';
 import { useEffect } from 'react';
@@ -12,10 +12,15 @@ export const PostsContainer = () => {
 
   const posts: Post[] = useSelector((state: RootState) => state.post.posts);
 
+  const isLoading: boolean = useSelector(
+    (state: RootState) => state.post.loading
+  );
+
   useEffect(() => {
     const fetchPosts = async () => {
       dispatch(getPostsThunk());
     };
+
     fetchPosts();
   }, [dispatch]);
 
@@ -38,8 +43,14 @@ export const PostsContainer = () => {
     >
       <PostAddition />
 
-      {posts.map((post: Post, index: number) => (
-        <SinglePost key={index} post={post} />
+      {isLoading && (
+        <Center mt={5}>
+          <Spinner />
+        </Center>
+      )}
+
+      {posts.map((post: Post) => (
+        <SinglePost key={post.id} post={post} />
       ))}
     </Box>
   );

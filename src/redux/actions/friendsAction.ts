@@ -10,7 +10,7 @@ import {
   addFriend,
   getFriends,
   searchUsers,
-} from 'redux/services/friends.service';
+} from 'redux/services/friends/friends.service';
 
 export const searchUsersThunk: AsyncThunk<
   SearchUserResponse,

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getPostsThunk } from 'redux/actions/postsAction';
+import { toast } from 'react-toastify';
+import { addPostThunk, getPostsThunk } from 'redux/actions/postsAction';
 import { Post } from 'redux/models/postModel';
 
 export interface PostState {
@@ -24,8 +25,15 @@ const postSlice = createSlice({
     builder.addCase(getPostsThunk.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(getPostsThunk.rejected, (state, action) => {
+    builder.addCase(getPostsThunk.rejected, (state) => {
       state.loading = true;
+    });
+    builder.addCase(addPostThunk.fulfilled, (state, action) => {
+      state.posts.push(action.payload);
+      toast.success('Post created');
+    });
+    builder.addCase(addPostThunk.rejected, () => {
+      toast.error('Problem creating post');
     });
   },
 });

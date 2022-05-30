@@ -8,7 +8,9 @@ import { AppDispatch, RootState } from 'redux/store';
 export const FriendsContainer = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  const friends = useSelector((state: RootState) => state.friend.friends);
+  const friends: Friend[] = useSelector(
+    (state: RootState) => state.friend.friends
+  );
 
   useEffect(() => {
     const getFriends = async () => {
@@ -25,8 +27,8 @@ export const FriendsContainer = () => {
     >
       {friends.length === 0 && <Center>Add friends to start messaging</Center>}
 
-      {friends.map((friend: Friend, index: number) => (
-        <HStack key={index} p={3}>
+      {friends.map((friend: Friend) => (
+        <HStack key={friend.id} p={3}>
           <Center
             fontWeight='semibold'
             //onclick open chat

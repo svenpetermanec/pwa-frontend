@@ -22,11 +22,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FaImage } from 'react-icons/fa';
 import { FileUpload } from './FileUpload';
 
+import { useDispatch } from 'react-redux';
+import { addPostThunk } from 'redux/actions/postsAction';
+import { AppDispatch } from 'redux/store';
+
 const CFaImage = chakra(FaImage);
 
 const postSchema = yup.object().shape({
   content: yup.string().required('Please give your post a description'),
-  images: yup.mixed().test({
+  image: yup.mixed().test({
     message: 'Please provide a supported file type',
     test: (file, context) => {
       if (!file.length) return true;
@@ -42,6 +46,8 @@ const postSchema = yup.object().shape({
 export const PostAddition = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const dispatch: AppDispatch = useDispatch();
+
   const {
     formState: { errors },
     register,
@@ -50,8 +56,16 @@ export const PostAddition = () => {
     resolver: yupResolver(postSchema),
   });
 
-  const onSubmit = (data: any) => {
-    //dispatch
+  const onSubmit = async (data: any) => {
+    const form = new FormData();
+    form.append('content', data.content);
+
+    for (let i = 0; i < data.image.length; i++) {
+      form.append('image', data.image[i]);
+    }
+
+    dispatch(addPostThunk(form));
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -74,8 +88,8 @@ export const PostAddition = () => {
                 <FormErrorMessage>{errors.content?.message}</FormErrorMessage>
               </FormControl>
               <HStack mt={3}>
-                <FormControl isInvalid={errors.images}>
-                  <FileUpload register={register('images')}>
+                <FormControl isInvalid={errors.image}>
+                  <FileUpload register={register('image')}>
                     <Button
                       colorScheme='gray'
                       leftIcon={<CFaImage color='teal.500' />}
@@ -84,7 +98,7 @@ export const PostAddition = () => {
                       <Text color='teal.500'>Attach image</Text>
                     </Button>
                   </FileUpload>
-                  <FormErrorMessage>{errors.images?.message}</FormErrorMessage>
+                  <FormErrorMessage>{errors.image?.message}</FormErrorMessage>
                 </FormControl>
                 <Button type='submit' colorScheme='teal'>
                   Submit

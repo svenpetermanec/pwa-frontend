@@ -5,7 +5,7 @@ import {
   LoginUserResponse,
   LoginUserRequest,
 } from 'redux/models/authModel';
-import { registerUser, loginUser } from 'redux/services/auth.service';
+import { registerUser, loginUser } from 'redux/services/auth/auth.service';
 
 export const registerUserThunk: AsyncThunk<
   RegisterUserResponse,
