@@ -4,7 +4,7 @@ import { devConsoleError, devConsoleLog } from './logging';
 if (window.location.hostname === 'localhost') {
   axios.defaults.baseURL = 'http://localhost:4200/api';
 } else {
-  //axios.defaults.baseURL = "";
+  axios.defaults.baseURL = 'https://pwabook.herokuapp.com/api';
 }
 
 axios.interceptors.request.use(
